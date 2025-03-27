@@ -6,8 +6,8 @@ var price_extra_textured = 105;
 var price_pattern = 155;
 
 var price_overlocking = 35;
-var price_overlocking_round = 70;
-var price_ribbon = 130;
+var price_overlocking_round = 90;
+var price_ribbon = 155;
 
 var price_handeling = 0;
 var price_handeling_square = 300;
@@ -529,7 +529,7 @@ $(function () {
 			$(".diameter-wrapper").removeClass("hide-this");
 
 			var actual_cut_cost = required_area * price_m2;
-			var purchase_area_markup = width_m * required_length * price_m2 * 1.5;
+			var purchase_area_markup = width_m * required_length * price_m2 * 1.8;
 			var carpet_cost = actual_cut_cost + purchase_area_markup;
 
 			console.log("Carpet Cost: " + carpet_cost);
