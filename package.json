@@ -1,0 +1,17 @@
+{
+  "name": "yudu",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "node build.js",
+    "watch": "node build.js --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "esbuild": "^0.25.1",
+    "javascript-obfuscator": "^4.1.1"
+  }
+}
