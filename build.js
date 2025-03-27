@@ -11,12 +11,12 @@ async function build() {
         bundle: true,
         outfile: './dist/index.js', // Output file
         minify: true, // Optional: Minify for production
-        sourcemap: true, // Optional: Generate sourcemaps
-        //target: ['es2020'],
-        //format: 'iife',
-        //treeShaking: true,
-        //legalComments: 'none',
-        //drop: ['console', 'debugger']
+        sourcemap: false, // Optional: Generate sourcemaps
+        drop: ['debugger', 'console'],
+        legalComments: 'none',
+        treeShaking: true,
+        format: 'iife',
+        target: ['es2020']
     });
 
     if (isWatch) {
@@ -36,7 +36,7 @@ async function build() {
             deadCodeInjection: true,
             deadCodeInjectionThreshold: 0.4,
             debugProtection: true,
-            debugProtectionInterval: true,
+            debugProtectionInterval: 4000,
             disableConsoleOutput: true,
             identifierNamesGenerator: 'hexadecimal',
             log: false,

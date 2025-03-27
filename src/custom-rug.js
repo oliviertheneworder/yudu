@@ -1,5 +1,5 @@
-var price_west = 185; // Westminster
-var price_soft = 180; // Softology Lite
+var price_west = 190; // Westminster (Soft)
+// var price_soft = 180; // Softology Lite
 var price_ultra_soft = 280; // Softology Ultra
 var price_textured = 100; // Mindful
 // var price_extra_textured = 105; // 
@@ -13,6 +13,9 @@ var price_handeling = 0;
 var price_handeling_square = 300;
 var price_handeling_round = 390;
 
+var markup_factor = 1.8;
+var markup_factor_pattern = 2;
+
 var vat_percentage = 1.15;
 
 var area_m2 = 0;
@@ -24,6 +27,7 @@ var price_shipping = 0;
 var width_cm = 0;
 var length_cm = 0;
 var diameter_cm = 0;
+
 
 var colour;
 var edging;
@@ -529,7 +533,7 @@ $(function () {
 			$(".diameter-wrapper").removeClass("hide-this");
 
 			var actual_cut_cost = required_area * price_m2;
-			var purchase_area_markup = width_m * required_length * price_m2 * 1.8;
+			var purchase_area_markup = width_m * required_length * price_m2 * markup_factor;
 			var carpet_cost = actual_cut_cost + purchase_area_markup;
 
 			console.log("Carpet Cost: " + carpet_cost);
@@ -561,9 +565,9 @@ $(function () {
 			var purchase_area_markup;
 			// Pattern
 			if ($("#pattern").is(":checked")) {
-				purchase_area_markup = width_m * required_length * price_m2 * 2;
+				purchase_area_markup = width_m * required_length * price_m2 * markup_factor_pattern;
 			} else {
-				purchase_area_markup = width_m * required_length * price_m2 * 1.5;
+				purchase_area_markup = width_m * required_length * price_m2 * markup_factor;
 			}
 			var carpet_cost = actual_cut_cost + purchase_area_markup;
 
