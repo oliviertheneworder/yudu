@@ -1,9 +1,10 @@
 var price_west = 190; // Westminster (Soft)
-// var price_soft = 180; // Softology Lite
 var price_ultra_soft = 280; // Softology Ultra
 var price_textured = 100; // Mindful
+var price_pattern = 155; // Textured Collection
+
+// var price_soft = 180; // Softology Lite
 // var price_extra_textured = 105; // 
-var price_pattern = 145; // Textured Collection
 
 var price_overlocking = 35;
 var price_overlocking_round = 90;
