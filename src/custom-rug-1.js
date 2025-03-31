@@ -220,32 +220,11 @@ $(function () {
 		var shortSide = Math.min(width_m, length_m);
 		var longSide = Math.max(width_m, length_m);
 
-		// Logic for setting width and length based on size criteria
-		width_m = shortSide;
-		length_m = longSide;
-		
-		// Both sides <= 2m
-		if (longSide <= 2 && shortSide <= 2) {
+		// Set width and length based on dimensions
+		if ((longSide <= 2 && shortSide <= 2) || (longSide <= 4 && shortSide > 2)) {
 			width_m = longSide;
 			length_m = shortSide;
-		}
-		// Both sides > 2m and <= 4m
-		else if (longSide <= 4 && shortSide > 2) {
-			width_m = longSide;
-			length_m = shortSide;
-		}
-		// One side <= 2m
-		else if (shortSide <= 2) {
-			width_m = shortSide;
-			length_m = longSide;
-		}
-		// Longer side > 4m
-		else if (longSide > 4) {
-			width_m = shortSide;
-			length_m = longSide;
-		}
-		// Longer side >= 3.5m and <= 4m
-		else if (longSide >= 3.5 && longSide <= 4) {
+		} else {
 			width_m = shortSide;
 			length_m = longSide;
 		}
