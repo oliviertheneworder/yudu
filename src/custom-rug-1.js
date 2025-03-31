@@ -221,7 +221,7 @@ $(function () {
 		var longSide = Math.max(width_m, length_m);
 
 		// Set width and length based on dimensions
-		if ((longSide <= 2 && shortSide <= 2) || (longSide <= 4 && shortSide > 2)) {
+		if ((longSide <= 2 && shortSide <= 2) || (longSide <= 4 && shortSide > 2) || (longSide <= 3.5 && shortSide <= 4) || (longSide <= 4 && shortSide <= 3.5)) {
 			width_m = longSide;
 			length_m = shortSide;
 		} else {
