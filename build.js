@@ -11,12 +11,12 @@ async function build() {
         bundle: true,
         outfile: './dist/index.js', // Output file
         minify: true, // Optional: Minify for production
-        sourcemap: true, // Optional: Generate sourcemaps
-        // drop: ['debugger', 'console'],
-        // legalComments: 'none',
-        // treeShaking: true,
-        // format: 'iife',
-        // target: ['es2020']
+        sourcemap: false, // Optional: Generate sourcemaps
+        drop: ['debugger', 'console'],
+        legalComments: 'none',
+        treeShaking: true,
+        format: 'iife',
+        target: ['es2020']
     });
 
     if (isWatch) {
