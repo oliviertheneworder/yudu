@@ -224,12 +224,34 @@ $(function () {
 		width_m = shortSide;
 		length_m = longSide;
 		
+		// Both sides <= 2m
 		if (longSide <= 2 && shortSide <= 2) {
 			width_m = longSide;
 			length_m = shortSide;
 		}
+		// Both sides > 2m and <= 4m
+		else if (longSide <= 4 && shortSide > 2) {
+			width_m = longSide;
+			length_m = shortSide;
+		}
+		// One side <= 2m
+		else if (shortSide <= 2) {
+			width_m = shortSide;
+			length_m = longSide;
+		}
+		// Longer side > 4m
+		else if (longSide > 4) {
+			width_m = shortSide;
+			length_m = longSide;
+		}
+		// Longer side >= 3.5m and <= 4m
+		else if (longSide >= 3.5 && longSide <= 4) {
+			width_m = shortSide;
+			length_m = longSide;
+		}
 
 		console.log("Short side: " + shortSide + "m, Long side: " + longSide + "m");
+		console.log("Width: " + width_m + "m, Length: " + length_m + "m");
 
 		// Patterned exception
 
