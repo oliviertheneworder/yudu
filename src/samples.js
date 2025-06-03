@@ -194,6 +194,115 @@ $(document).ready(function () {
 		
 	});
 
+	// Initializing Shopify client
+	const client = ShopifyBuy.buildClient({
+		domain: 'yudu2020.myshopify.com',
+		storefrontAccessToken: '4a0e78fe19caee70a369f98925b4a317'
+	});
+
+	// Checkout button handler - using jQuery to ensure it works
+	$(document).on('click', '#checkoutButton', function(event) {
+		console.log("Checkout button clicked!"); // Debug log
+		
+		const $button = $(this);
+		$button.text("Please wait...");
+
+		client.checkout.create().then(async (checkout) => {
+		
+			const requestURL = 'https://yudu-server.herokuapp.com/yudu-sample-rug-api';
+			const nodes = document.querySelectorAll('.samples-detail-wrapper .samples-detail');
+			const price = '150';
+		
+			if (nodes.length > 0) { // Check if there are actually samples selected
+		
+				let variantString = '';
+		
+				nodes.forEach((el) => {
+		
+					const range = el.children[1].children[0].children[0].innerHTML;
+					const colour = el.children[1].children[0].children[1].innerHTML;
+		
+					if (variantString.length < 1) {
+						variantString = range + ' / ' + colour;
+					} else {
+						variantString += ' / ' + range + ' / ' + colour;
+					}
+		
+				});
+
+				console.log("Variant string:", variantString); // Debug log
+		
+				// Create our data object with the required data
+				const body = { variantString, price };
+		
+				// Send a POST request to our endpoint with the required data
+				const options = {
+					method: 'POST',
+					body: JSON.stringify(body),
+					headers: {
+						'Content-Type': 'Application/JSON'
+					}
+				}
+		
+				try {
+					console.log("Making API request..."); // Debug log
+					// Request to server with all necessary data
+					const data = await fetch(requestURL, options)
+						.then((res) => {
+							if (!res.ok) {
+								throw new Error(`HTTP error! status: ${res.status}`);
+							}
+							return res.json();
+						});
+
+					console.log("API response:", data); // Debug log
+		
+					const lineItemsToAdd = [
+						{
+							variantId: data.id,
+							quantity: 1
+						}
+					];
+		
+					// Add an item to the checkout
+					client.checkout.addLineItems(checkout.id, lineItemsToAdd).then((checkout) => {
+		
+						console.log("Opening checkout:", checkout.webUrl); // Debug log
+						// Successfully created checkout, now open it
+						window.open(checkout.webUrl);
+						
+						// Only reset samples after successful checkout
+						resetSamples();
+		
+					}).catch((error) => {
+						console.error('Error adding items to checkout:', error);
+						// Reset button text on error
+						$button.text("Order for R150");
+						alert('There was an error processing your order. Please try again.');
+					});
+					
+				} catch (error) {
+					console.error('Error creating sample product:', error);
+					// Reset button text on error
+					$button.text("Order for R150");
+					alert('There was an error processing your order. Please try again.');
+				}
+		
+			} else {
+				// No samples selected
+				$button.text("Order for R150");
+				alert('Please select at least one sample before checking out.');
+			}
+		
+		}).catch((error) => {
+			console.error('Error creating checkout:', error);
+			// Reset button text on error
+			$button.text("Order for R150");
+			alert('There was an error processing your order. Please try again.');
+		});
+
+	});
+
 });
 
 function resetSamples() {
@@ -222,107 +331,3 @@ function resetSamples() {
   
 	}, 3000); // Reduced timeout to 3 seconds after successful checkout
 }
-
-// Initializing a client to return content in the store's primary language
-
-const client = ShopifyBuy.buildClient({
-	domain: 'yudu2020.myshopify.com',
-	storefrontAccessToken: '4a0e78fe19caee70a369f98925b4a317'
-});
-
-const checkoutButton = document.querySelector('#checkoutButton');
-
-checkoutButton.addEventListener('click', event => {
-
-	// Change button text to indicate processing
-	checkoutButton.textContent = "Please wait...";
-
-	client.checkout.create().then(async (checkout) => {
-	
-		const requestURL = 'https://yudu-server.herokuapp.com/yudu-sample-rug-api';
-		const nodes = document.querySelectorAll('.samples-detail-wrapper .samples-detail');
-		const price = '150';
-	
-		if (nodes.length > 0) { // Check if there are actually samples selected
-	
-			let variantString = '';
-	
-			nodes.forEach((el) => {
-	
-				const range = el.children[1].children[0].children[0].innerHTML;
-				const colour = el.children[1].children[0].children[1].innerHTML;
-	
-				if (variantString.length < 1) {
-					variantString = range + ' / ' + colour;
-				} else {
-					variantString += ' / ' + range + ' / ' + colour;
-				}
-	
-			});
-	
-			// Create our data object with the required data
-			const body = { variantString, price };
-	
-			// Send a POST request to our endpoint with the required data
-			const options = {
-				method: 'POST',
-				body: JSON.stringify(body),
-				headers: {
-					'Content-Type': 'Application/JSON'
-				}
-			}
-	
-			try {
-				// Request to server with all necessary data
-				const data = await fetch(requestURL, options)
-					.then((res) => {
-						if (!res.ok) {
-							throw new Error(`HTTP error! status: ${res.status}`);
-						}
-						return res.json();
-					});
-	
-				const lineItemsToAdd = [
-					{
-						variantId: data.id,
-						quantity: 1
-					}
-				];
-	
-				// Add an item to the checkout
-				client.checkout.addLineItems(checkout.id, lineItemsToAdd).then((checkout) => {
-	
-					// Successfully created checkout, now open it
-					window.open(checkout.webUrl);
-					
-					// Only reset samples after successful checkout
-					resetSamples();
-	
-				}).catch((error) => {
-					console.error('Error adding items to checkout:', error);
-					// Reset button text on error
-					checkoutButton.textContent = "Order for R150";
-					alert('There was an error processing your order. Please try again.');
-				});
-				
-			} catch (error) {
-				console.error('Error creating sample product:', error);
-				// Reset button text on error
-				checkoutButton.textContent = "Order for R150";
-				alert('There was an error processing your order. Please try again.');
-			}
-	
-		} else {
-			// No samples selected
-			checkoutButton.textContent = "Order for R150";
-			alert('Please select at least one sample before checking out.');
-		}
-	
-	}).catch((error) => {
-		console.error('Error creating checkout:', error);
-		// Reset button text on error
-		checkoutButton.textContent = "Order for R150";
-		alert('There was an error processing your order. Please try again.');
-	});
-
-});
