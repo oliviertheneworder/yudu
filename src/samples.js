@@ -196,13 +196,6 @@ $(document).ready(function () {
 
 });
 
-// Call resetSamples
-
-$("#checkoutButton").click(function() {
-	$(this).text("Please wait...");
-	resetSamples();
-});
-
 function resetSamples() {
 	
 	setTimeout(function() {
@@ -227,8 +220,9 @@ function resetSamples() {
   
 		sampleArray = [];
   
-	}, 7000); // After milliseconds
+	}, 3000); // Reduced timeout to 3 seconds after successful checkout
 }
+
 // Initializing a client to return content in the store's primary language
 
 const client = ShopifyBuy.buildClient({
@@ -240,13 +234,16 @@ const checkoutButton = document.querySelector('#checkoutButton');
 
 checkoutButton.addEventListener('click', event => {
 
+	// Change button text to indicate processing
+	checkoutButton.textContent = "Please wait...";
+
 	client.checkout.create().then(async (checkout) => {
 	
 		const requestURL = 'https://yudu-server.herokuapp.com/yudu-sample-rug-api';
 		const nodes = document.querySelectorAll('.samples-detail-wrapper .samples-detail');
 		const price = '150';
 	
-		if (nodes) {
+		if (nodes.length > 0) { // Check if there are actually samples selected
 	
 			let variantString = '';
 	
@@ -275,28 +272,57 @@ checkoutButton.addEventListener('click', event => {
 				}
 			}
 	
-			// Request to server with all necessary data
-			const data = await fetch(requestURL, options)
-				.then((res) => {
-					return res.json();
+			try {
+				// Request to server with all necessary data
+				const data = await fetch(requestURL, options)
+					.then((res) => {
+						if (!res.ok) {
+							throw new Error(`HTTP error! status: ${res.status}`);
+						}
+						return res.json();
+					});
+	
+				const lineItemsToAdd = [
+					{
+						variantId: data.id,
+						quantity: 1
+					}
+				];
+	
+				// Add an item to the checkout
+				client.checkout.addLineItems(checkout.id, lineItemsToAdd).then((checkout) => {
+	
+					// Successfully created checkout, now open it
+					window.open(checkout.webUrl);
+					
+					// Only reset samples after successful checkout
+					resetSamples();
+	
+				}).catch((error) => {
+					console.error('Error adding items to checkout:', error);
+					// Reset button text on error
+					checkoutButton.textContent = "Order for R150";
+					alert('There was an error processing your order. Please try again.');
 				});
+				
+			} catch (error) {
+				console.error('Error creating sample product:', error);
+				// Reset button text on error
+				checkoutButton.textContent = "Order for R150";
+				alert('There was an error processing your order. Please try again.');
+			}
 	
-			const lineItemsToAdd = [
-				{
-					variantId: data.id,
-					quantity: 1
-				}
-			];
+		} else {
+			// No samples selected
+			checkoutButton.textContent = "Order for R150";
+			alert('Please select at least one sample before checking out.');
+		}
 	
-			// Add an item to the checkout
-			client.checkout.addLineItems(checkout.id, lineItemsToAdd).then((checkout) => {
-	
-				window.open(checkout.webUrl);
-	
-			});
-	
-		} // Check if there are more than 0 Samples selected
-	
+	}).catch((error) => {
+		console.error('Error creating checkout:', error);
+		// Reset button text on error
+		checkoutButton.textContent = "Order for R150";
+		alert('There was an error processing your order. Please try again.');
 	});
 
 });
