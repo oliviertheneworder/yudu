@@ -212,7 +212,7 @@ function resetSamples() {
 		$(".samples-detail.carpet").remove();
   
 		$(".field-label").css("opacity", "1");
-		$("#checkoutButton").text("Order for R95");
+		$("#checkoutButton").text("Order for R150");
   
 		$(".remove-notice").removeClass("hide");
 		//$(".remove-notice").css({"background-color":"#8ae68a","color":"#000"});
@@ -244,7 +244,7 @@ checkoutButton.addEventListener('click', event => {
 	
 		const requestURL = 'https://yudu-server.herokuapp.com/yudu-sample-rug-api';
 		const nodes = document.querySelectorAll('.samples-detail-wrapper .samples-detail');
-		const price = '95';
+		const price = '150';
 	
 		if (nodes) {
 	
