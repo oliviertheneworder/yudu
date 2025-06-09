@@ -924,15 +924,15 @@ $(function () {
 				$("#meta-width").html("120 cm");
 				$("#meta-length").html("160 cm");
 
-				totalVatCeil = 2300;
-				totalVat = 2300;
-				total = 2300;
+				totalVatCeil = 2600;
+				totalVat = 2600;
+				total = 2600;
 
 				let floatPrice = total / 4;
 				let floatPriceRounded = floatPrice.toFixed(2);
 				$('.float-price').text("R " + floatPriceRounded);
 
-				$("#total_amount").text("R 2300");
+				$("#total_amount").text("R " + total);
 
 				antiSlipSqm = 1.2 * 1.6;
 				antiSlipTotal = antiSlipSqm * antiSlipExVat;
@@ -964,9 +964,9 @@ $(function () {
 				$("#meta-width").html("200 cm");
 				$("#meta-length").html("300 cm");
 
-				totalVatCeil = 4800;
-				totalVat = 4800;
-				total = 4800;
+				totalVatCeil = 5300;
+				totalVat = 5300;
+				total = 5300;
 
 				let floatPrice = total / 4;
 				let floatPriceRounded = floatPrice.toFixed(2);
@@ -1004,9 +1004,9 @@ $(function () {
 				$("#meta-width").html("300 cm");
 				$("#meta-length").html("350 cm");
 
-				totalVatCeil = 7900;
-				totalVat = 7900;
-				total = 7900;
+				totalVatCeil = 8700;
+				totalVat = 8700;
+				total = 8700;
 
 				let floatPrice = total / 4;
 				let floatPriceRounded = floatPrice.toFixed(2);
